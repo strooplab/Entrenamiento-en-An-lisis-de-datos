@@ -1,10 +1,3 @@
---*************************************************************************
-----****  COVID 19 DATASET ANALYSIS - ANÁLISIS DE DATASET COVID 19     ****
---*************************************************************************
---*************************************************************************
-----****	HECHO POR: STROOPLAB									   ****
-----****    GUIA: Alex The Analyst (www.youtube.com)				   ****
---*************************************************************************
 SELECT *
 FROM db_portafolio..CovidDeaths$
 WHERE continent is not null
@@ -39,6 +32,11 @@ FROM db_portafolio..CovidDeaths$
 GROUP BY location, population
 ORDER BY '%_contagio' DESC
 
+SELECT location, population, date, MAX(total_cases) as MayorNumeroInfectados, MAX((total_cases/population))*100 as '%_contagio'
+FROM db_portafolio..CovidDeaths$
+GROUP BY location, population, date
+ORDER BY '%_contagio' DESC
+
 -- Analizar el país con mayor número de muertes
 SELECT location, MAX(cast(total_deaths as int)) as MayorNumeroDeMuertes
 FROM db_portafolio..CovidDeaths$
@@ -62,14 +60,14 @@ GROUP BY location, population
 ORDER BY muertes DESC
 
 -- Número de nuevos casos por día a nivel mundial
-SELECT date, SUM(new_cases) as casos_confirmados, 
+SELECT SUM(new_cases) as casos_confirmados, 
 	SUM(cast(new_deaths as int)) as muertes, 
 	SUM(cast(new_deaths as int))
 	/SUM(new_cases)*100 as porcentaje_de_muertes
 FROM db_portafolio..CovidDeaths$
 WHERE continent is not null
-GROUP BY date
-ORDER BY 4 DESC -- Necesito encontrar el día mas crítico a nivel mundial con respecto al porcentaje de muertes
+-- GROUP BY date
+ORDER BY 2,3 -- Necesito encontrar el día mas crítico a nivel mundial con respecto al porcentaje de muertes
 
 -- Analizar población vs vacunaciones
 
@@ -174,3 +172,10 @@ WHERE dea.continent IS NOT NULL
 SELECT * , (vacunaciones_totales/Population)*100 as porcentaje_vacunados
 FROM porcentaje_de_poblacion_vacunada
 order BY 3,2
+
+SELECT Location, SUM(cast(new_deaths as int)) as muertes_totales
+FROM db_portafolio..CovidDeaths$
+WHERE continent is null
+AND Location not in ('World', 'European Union', 'International')
+GROUP BY Location
+ORDER BY muertes_totales DESC
