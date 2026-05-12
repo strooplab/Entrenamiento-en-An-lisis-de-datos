@@ -28,8 +28,8 @@ SQL Server (T-SQL), Python, pandas, Jupyter Notebook, Excel (en progreso).
 - [x] Limpieza y segmentación en Python  
 - [x] Análisis exploratorio (EDA)
 - [x] Visualización con Tableau
-- [ ] Visualización con matplotlib / seaborn  
-- [ ] Dashboard en Excel o Power BI  
+- [x] Visualización con matplotlib / seaborn  
+- [ ] Dashboard Power BI  
 
 ---
 
